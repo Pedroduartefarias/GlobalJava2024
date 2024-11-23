@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-</head>
 <body>
   <h1>🌞 WebApp de Monitoramento Climático para Energia Solar</h1>
 
@@ -30,7 +23,6 @@
     <li><strong>Monitoramento Climático</strong>: Integração com a API OpenWeatherMap para obter informações climáticas em tempo real.</li>
     <li><strong>Recomendações Personalizadas</strong>: IA generativa usando Groq fornece dicas baseadas em condições específicas.</li>
     <li><strong>Autenticação e Autorização</strong>: Implementação com Spring Security para proteger o acesso às funcionalidades.</li>
-    <li><strong>Mensageria Assíncrona</strong>: Envio de notificações e mensagens utilizando RabbitMQ.</li>
     <li><strong>Persistência de Dados</strong>: Utilização do Oracle SQL Server para armazenar informações de usuários, clima e histórico de recomendações.</li>
   </ul>
 
@@ -49,121 +41,88 @@
   
   <h3>Usuários</h3>
   <ul>
-    <li><strong>POST /usuario</strong>  
-      <pre>
-{
+    <li><strong>POST /usuario</strong>
+      <pre><code>{
   "nome": "Carlos Silva",
   "email": "carlos.silva@email.com",
   "senha": "senha123",
   "role": "USER"
-}
-      </pre>
+}</code></pre>
       <strong>Resposta:</strong>
-      <pre>
-HTTP/1.1 201 Created
+      <pre><code>HTTP/1.1 201 Created
 {
   "id": 1,
   "nome": "Carlos Silva",
   "email": "carlos.silva@email.com",
   "createdAt": "2024-11-22T12:34:56",
   "updatedAt": "2024-11-22T12:34:56"
-}
-      </pre>
-    </li>
-    
-    <li><strong>POST /login</strong>
-      <pre>
-{
-  "email": "joao.silva@email.com",
-  "senha": "senha123"
-}
-      </pre>
-      <strong>Resposta:</strong>
-      <pre>
-{
-  "token": "seu.token.jwt.aqui"
-}
-      </pre>
+}</code></pre>
     </li>
 
-    <li><strong>GET /usuario/profile</strong>  
-      <strong>Cabeçalho:</strong> Authorization: Bearer seu.token.jwt.aqui  
+    <li><strong>POST /login</strong>
+      <pre><code>{
+  "email": "joao.silva@email.com",
+  "senha": "senha123"
+}</code></pre>
       <strong>Resposta:</strong>
-      <pre>
-{
+      <pre><code>{
+  "token": "seu.token.jwt.aqui"
+}</code></pre>
+    </li>
+
+    <li><strong>GET /usuario/profile</strong>
+      <strong>Cabeçalho:</strong> <code>Authorization: Bearer seu.token.jwt.aqui</code>
+      <strong>Resposta:</strong>
+      <pre><code>{
   "id": 1,
   "nome": "João Silva",
   "email": "joao.silva@email.com",
   "role": "USER"
-}
-      </pre>
+}</code></pre>
     </li>
   </ul>
 
   <h3>Clima</h3>
   <ul>
-    <li><strong>GET /api/condicoes-climaticas/{cidade}</strong>  
-      <strong>Cabeçalho:</strong> Authorization: Bearer seu.token.jwt.aqui
+    <li><strong>GET /api/condicoes-climaticas/{cidade}</strong>
+      <strong>Cabeçalho:</strong> <code>Authorization: Bearer seu.token.jwt.aqui</code>
     </li>
     
-    <li><strong>GET /api/recomendacoes/gerar?cidade={cidade}</strong>  
-      <strong>Cabeçalho:</strong> Authorization: Bearer seu.token.jwt.aqui  
+    <li><strong>GET /api/recomendacoes/gerar?cidade={cidade}</strong>
+      <strong>Cabeçalho:</strong> <code>Authorization: Bearer seu.token.jwt.aqui</code>
       <strong>Resposta:</strong>
-      <pre>
-{
-  "id": 2,
-  "nome": "Pedro Duarte",
-  "email": "pedro.duarte@email.com",
-  "senha": "senha1245"
-}
-      </pre>
+      <pre><code>{
+  "recomendacoes": [
+    "Limpe os painéis solares regularmente para maior eficiência.",
+    "Reduza o uso de eletrodomésticos durante picos de calor."
+  ]
+}</code></pre>
     </li>
   </ul>
 
   <h3>Mensageria</h3>
   <ul>
-    <li><strong>POST /api/climate/send-event?message={mensagem}</strong>  
-      <strong>Cabeçalho:</strong> Authorization: Bearer seu.token.jwt.aqui  
+    <li><strong>POST /api/climate/send-event?message={mensagem}</strong>
+      <strong>Cabeçalho:</strong> <code>Authorization: Bearer seu.token.jwt.aqui</code>
       <strong>Body:</strong>
-      <pre>
-{
-  "message": "Evento climático em Rondonia"
-}
-      </pre>
+      <pre><code>{
+  "message": "Evento climático em Rondônia"
+}</code></pre>
     </li>
   </ul>
 
   <h2>📝 Como Executar</h2>
   <ol>
     <li>Clone o repositório:
-      <pre>
-git clone https://github.com/seu-usuario/monitoramento-climatico.git
-cd monitoramento-climatico
-      </pre>
+      <pre><code>git clone https://github.com/P/monitoramento-climatico.git</code></pre>
     </li>
-    <li>Instale as dependências:
-      <pre>
-npm install
-      </pre>
-    </li>
-    <li>Configure o backend em <code>application.properties</code> com a API OpenWeatherMap e RabbitMQ.</li>
-    <li>Execute o backend:
-      <pre>
-./mvnw spring-boot:run
-      </pre>
-    </li>
-    <li>Execute o frontend:
-      <pre>
-npm start
-      </pre>
+    <li>Configure o banco de dados e as chaves da API no arquivo <code>application.properties</code>.</li>
+    <li>Execute o docker:
+      <pre><code>docker-compose up -d</code></pre>
     </li>
   </ol>
 
-  <h2>🔗 Licença</h2>
-  <p>Este projeto é licenciado sob a <a href="LICENSE">MIT License</a>.</p>
-
-  <footer>
-    <p>&copy; 2024 Pedro Duarte Farias e Equipe. Todos os direitos reservados.</p>
-  </footer>
+  <h2>🔗 Link para o video</h2>
+  <p>https://youtu.be/xw88-g75RK0?si=itXlmiou0ZFj4STA</p>
 </body>
 </html>
